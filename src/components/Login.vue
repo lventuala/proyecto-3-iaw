@@ -81,8 +81,13 @@ export default {
   methods: {
     async login() {
       try {
-        let result = await servicios.login(this.email,this.password);
-        if (result.data.error) {
+        //let result = await servicios.login(this.email,this.password);
+        let email = this.email; 
+        let password = this.password; 
+        await this.$store.dispatch('login',{email,password});
+        this.$router.push("/");
+        console.log(this.$store.getters.getUser);
+        /*if (result.data.error) {
           this.error = true; 
           this.msn_error = result.data.msn_error; 
           console.log("msn_error = ", this.msn_error);
@@ -90,7 +95,7 @@ export default {
           let token = result.data.token; 
           this.error = false; 
           console.log("TOKEN = " + token);
-        }
+        }*/
       } catch (ex) {
         console.log(ex);
       }

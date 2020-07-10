@@ -22,6 +22,8 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                           <router-link to="/"></router-link>
+
+                          <template v-if="$store.getters.getUser == null">
                         
                             <li class="nav-item">
                                 <router-link class="nav-link" to="/login">Login</router-link>
@@ -29,7 +31,11 @@
                         
                             <li class="nav-item">
                                 <router-link class="nav-link" to="/registro">Registro</router-link>
-                            </li>                        
+                            </li>
+                          </template>
+                          <template v-else>
+                            <span> {{ $store.getters.getUser.nombre }} </span>
+                          </template>
                         
                     </ul>
                 </div>
