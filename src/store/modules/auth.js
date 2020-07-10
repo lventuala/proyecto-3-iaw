@@ -1,7 +1,7 @@
 import axios from "axios"; 
 import Cookies from "js-cookie";
 
-axios.defaults.baseURL = "http://proyecto-2-iaw.test/api/"; 
+axios.defaults.baseURL = process.env.VUE_APP_URL_API;
 
 const state = () => ({
     user: null
