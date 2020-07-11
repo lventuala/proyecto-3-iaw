@@ -14,8 +14,16 @@ const mutations = {
 }
 
 const actions = {
+    async logout({ dispatch }) {
+      await axios.post("logout");
+
+      Cookies.remove("token");
+      
+      // seteo info del usuario
+      await dispatch("getUser");
+    },
+
     async login({ dispatch }, datos_usuario) {
-      //await axios.post("login", datos_usuario);
       let result = await axios.post("login", datos_usuario);
       let access_token = result.data.token
 
@@ -29,18 +37,16 @@ const actions = {
 
     async getUser({ commit }) {
       // recupero token para buscar el usuario
-      let access_token = Cookies.get("token");
-      axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}` 
+      //let access_token = Cookies.get("token");
+      //axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}` 
 
       // busco usuario
       await axios.get("/user")
       .then(res => {
-            console.log("USER = ", res.data); 
-            //commit("SET_USER",res.data); 
             commit("SET_USER",res.data)
+            
       })
       .catch(() => {
-            console.log("ERROR!!!");
             commit("SET_USER",null); 
       });
     }

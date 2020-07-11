@@ -4,6 +4,9 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 
+// importo interceptores para enviar y actualizar el token
+import './services/interceptors'
+
 export const URL_API = process.env.VUE_APP_URL_API;
 
 Vue.config.productionTip = false;

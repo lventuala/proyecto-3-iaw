@@ -34,7 +34,24 @@
                             </li>
                           </template>
                           <template v-else>
-                            <span> {{ $store.getters.getUser.nombre }} </span>
+                            
+
+                            <li class="nav-item dropdown">
+                              <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ $store.getters.getUser.nombre }} <span class="caret"></span>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                  <a class="dropdown-item" href="#">
+                                      Ir al panel
+                                  </a>
+
+
+                                  <a class="dropdown-item" href="#" @click="logout">
+                                      Salir
+                                  </a>
+                              </div>
+                            </li>
+                            
                           </template>
                         
                     </ul>
@@ -46,6 +63,16 @@
     <router-view />
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    async logout() {
+      await this.$store.dispatch("logout");
+    }
+  }
+}
+</script>
 
 <style>
 #app {
