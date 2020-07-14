@@ -1,0 +1,6 @@
+.img_Thumbnail {
+    border: 1px solid #ddd; /* Gray border */
+    border-radius: 4px;  /* Rounded border */
+    padding: 2px; /* Some padding */
+    width: 60px; /* Set a small width */
+}

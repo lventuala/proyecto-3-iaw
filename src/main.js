@@ -4,6 +4,8 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 
+import "@/assets/css/app.css"
+
 // importo interceptores para enviar y actualizar el token
 import './services/interceptors'
 

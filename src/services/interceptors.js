@@ -1,7 +1,7 @@
 import axios from "axios"; 
 import Cookies from "js-cookie";
 
-const url_publicas = ['login', 'user', 'logout' ];
+const url_publicas = ['login', 'logout' ];
 
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
@@ -11,9 +11,6 @@ axios.interceptors.request.use(function (config) {
       let access_token = Cookies.get("token");
       config.headers = { 
           'Authorization': `Bearer ${access_token}`,
-          /*'Accept': 'application/json',
-          'Content-Type': 'application/x-www-form-urlencoded'*/
-
           'Content-Type': 'application/json', 
           'X-Requested-With': 'XMLHttpRequest'
       }
@@ -27,12 +24,15 @@ axios.interceptors.request.use(function (config) {
  
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
+    // si devuelve un token -> actualizo token!
+    if ( response.data.token ) {
+      let access_token = response.data.token;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}` ;
+      Cookies.set("token", access_token);
+    }
+
     return response;
 }, function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
     return Promise.reject(error);
 });
 

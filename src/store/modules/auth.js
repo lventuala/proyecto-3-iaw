@@ -25,26 +25,16 @@ const actions = {
 
     async login({ dispatch }, datos_usuario) {
       let result = await axios.post("login", datos_usuario);
-      let access_token = result.data.token
-
-      // seteo el token 
-      axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}` 
-      Cookies.set("token", access_token);
       
       // seteo info del usuario
       await dispatch("getUser");
     },
 
     async getUser({ commit }) {
-      // recupero token para buscar el usuario
-      //let access_token = Cookies.get("token");
-      //axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}` 
-
       // busco usuario
       await axios.get("/user")
       .then(res => {
-            commit("SET_USER",res.data)
-            
+        commit("SET_USER",res.data.usuario)
       })
       .catch(() => {
             commit("SET_USER",null); 
@@ -55,6 +45,10 @@ const actions = {
   const getters = {
     getUser: state => {
         return state.user
+    },
+
+    isAdmin: state => {
+      return state.user
     }
   }
 
