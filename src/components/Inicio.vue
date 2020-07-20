@@ -1,7 +1,5 @@
 <template>
   <div class="container-fluid">
-
-
     <div class="card-deck mb-3">
         <div class="card">
             <img class="card-img-top" src="@/assets/chef-img-1.png" alt="Card image cap">
@@ -56,15 +54,16 @@
 import prodService from '@/services/productos'; 
 
 export default {
-  created() {
-    prodService.productosAll().then(res => {
-        this.productos = res.data.productos; 
-    }); 
-   },
-  data() {
-      return {
-        productos : []
-      }
-  }
+    name: "Inicio",
+    created() {
+        prodService.productosAll().then(res => {
+            this.productos = res.data.productos; 
+        }); 
+    },
+    data() {
+        return {
+            productos : []
+        }
+    }
 };
 </script>

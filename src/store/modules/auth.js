@@ -44,7 +44,7 @@ const actions = {
 
   const getters = {
     getUser: state => {
-        return state.user
+        return state.user; 
     },
 
     isAdmin: state => {

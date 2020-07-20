@@ -4,6 +4,10 @@ import Inicio from "../views/InicioView.vue";
 import Login from "../views/LoginView.vue"; 
 import Registro from "../views/RegistroView.vue"; 
 
+import Home from "@/components/private/Home"; 
+import Productos from "@/components/private/Productos"; 
+import MP from "@/components/private/MateriasPrimas"; 
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -25,13 +29,39 @@ const routes = [
     path: "/registro",
     name: "Registro",
     component: Registro
+  }, 
+  {
+    path: "/home",
+    name: "Home",
+    meta: {
+      requiresAuth: true
+    },
+    component: Home
+  },
+  {
+    path: "/productos",
+    name: "Productos",
+    meta: {
+      requiresAuth: true
+    },
+    component: Productos
+  },
+  {
+    path: "/materias-primas",
+    name: "MateriasPrimas",
+    meta: {
+      requiresAuth: true
+    },
+    component: MP
   }
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes, 
+  linkActiveClass: "active",
+  linkExactActiveClass: "",
 });
 
 export default router;

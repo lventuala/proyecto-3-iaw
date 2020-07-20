@@ -82,14 +82,10 @@ export default {
         let email = this.email; 
         let password = this.password; 
         await this.$store.dispatch('login',{email,password});
-        this.$router.push("/");
-        /*if (result.data.error) {
-          this.error = true; 
-          this.msn_error = result.data.msn_error; 
-        } else {
-          let token = result.data.token; 
-          this.error = false; 
-        }*/
+        
+        // redirecciono a la funcion por defecto
+        let usuario = this.$store.getters.getUser; 
+        this.$router.push(usuario.url_default);
       } catch (ex) {
       }
     }
