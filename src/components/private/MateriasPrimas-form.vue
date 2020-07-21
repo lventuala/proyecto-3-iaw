@@ -25,7 +25,7 @@
           v-model="mp_nueva.id_categoria"
           required
         >
-          <option disabled selected value>Seleccione una categoria...</option>
+          <option v-bind:value="-1" disabled selected>Seleccione una categoria...</option>
           <option v-for="c in this.categorias" :key="c.id" v-bind:value="c.id">
             {{ c.nombre }}
           </option>
@@ -41,7 +41,7 @@
           v-model="mp_nueva.id_um"
           required
         >
-          <option disabled selected value
+          <option v-bind:value="-1" disabled selected
             >Seleccione unidad de medida...</option
           >
           <option
@@ -77,74 +77,62 @@
 </template>
 
 <script>
-import mpService from "@/services/materiasPrimas";
 import { mapState, mapActions } from "vuex";
 
 export default {
   data() {
-    return {
-      error: false,
-    };
+    return {};
   },
   props: {
-    categorias: {
-      type: Array,
-      default: () => [],
-    },
-
-    unidad_medida: {
-      type: Array,
-      default: () => [],
-    },
-
-    mp: {
-      type: Object,
-      default: null,
+    tipo_movimiento: {
+      type: String,
+      default: "", // valores : alta / modificacion
     },
   },
   methods: {
     // mapeo funciones para no utilizar this.$store...
-    ...mapActions("mp_actualizacion", ["setMP"]),
+    ...mapActions('mp_actualizacion', ['actualizarMP', 'guardarMP', 'setError']),
 
-    guardarDatos() {
-      // chequeo si hay cambios para enviar solicitud de guardarMP
-      let hay_cambios =
-        this.mp_seleccionada.nombre.trim() !== this.mp_nueva.nombre.trim() ||
-        this.mp_seleccionada.id_categoria !== this.mp_nueva.id_categoria ||
-        this.mp_seleccionada.id_um !== this.mp_nueva.id_um ||
-        this.mp_seleccionada.cantidad !== this.mp_nueva.cantidad;
+    async guardarDatos() {
+      
+      if (this.tipo_movimiento == 'alta') {
+        this.guardarMP();
+        if (!this.error) {
+          // cierro modal
+          $('#btn-cancelar-mp').click();
+        }
+      } else if (this.tipo_movimiento == 'modificacion') {
+        // chequeo si hay cambios para enviar solicitud de guardarMP
+        let hay_cambios =
+          this.mp_seleccionada.nombre.trim() !== this.mp_nueva.nombre.trim() ||
+          this.mp_seleccionada.id_categoria !== this.mp_nueva.id_categoria ||
+          this.mp_seleccionada.id_um !== this.mp_nueva.id_um ||
+          this.mp_seleccionada.cantidad !== this.mp_nueva.cantidad;
 
-      if (hay_cambios) {
-        mpService
-          .actualizarMP(this.mp_nueva.id, this.mp_nueva)
-          .then((res) => {
-            let mp_res = res.data;
-
-            // actualizo info en el registro seleccionado para que se reflejen los cambios
-            this.mp_seleccionada.nombre = mp_res.nombre;
-            this.mp_seleccionada.categoria = mp_res.categoria;
-            this.mp_seleccionada.uni_medida = mp_res.uni_medida;
-            this.mp_seleccionada.cantidad = mp_res.cantidad;
-            this.mp_seleccionada.id_um = this.mp_nueva.id_um;
-            this.mp_seleccionada.id_categoria = this.mp_nueva.id_categoria;
-
-            this.error = false;
-
+        if (hay_cambios) {
+          await this.actualizarMP(); 
+          if (!this.error) {
             // cierro modal
-            $("#btn-cancelar-mp").click();
-          })
-          .catch((err) => {
-            this.error = true;
-          });
-      } else {
-        this.error = false;
-        // cierro modal
-        $("#btn-cancelar-mp").click();
+            $('#btn-cancelar-mp').click();
+          }
+        } else {
+          this.setError(false);
+          // cierro modal
+          $('#btn-cancelar-mp').click();
+        }
       }
-    },
+    }
   },
   computed: {
-    ...mapState("mp_actualizacion", ["mp_seleccionada", "mp_nueva"]),
+    ...mapState(
+      'mp_actualizacion',
+      [
+        'mp_seleccionada',
+        'mp_nueva',
+        'categorias',
+        'unidad_medida',
+        'error'
+      ]),
   },
 };
 </script>

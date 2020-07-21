@@ -39,6 +39,7 @@
                           </tr>
                       </thead>
                       <tbody id="body_list_mp">
+                      
                           <tr v-for="mp in materias_primas" :key="mp.id">
                               <td>{{mp.nombre}}</td>
                               <td>{{mp.categoria}}</td>
@@ -49,12 +50,13 @@
                                       <i class="material-icons md-12">edit</i>
                                   </button>
 
-                                  <button class="btn btn-danger">
+                                  <button class="btn btn-danger" @click="mostrarMSNEliminar(mp)">
                                       <i class="material-icons md-12">delete</i>
                                   </button>
                               </td>
 
                           </tr>
+
                       </tbody>
                   </table>
 
@@ -71,17 +73,39 @@
                             </button>
                         </div>
                         <div id="mod_mp" class="modal-body">
-                            <MPForm :categorias="this.categorias" :unidad_medida="this.unidad_medida"/>
+                            
+                            <MPForm :tipo_movimiento="this.tipo_movimiento"/>
+
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="id_elim_mp" tabindex="-1" role="dialog" aria-labelledby="lb_elim_mp" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Eliminar Materia Prima</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                x
+                            </button>
+                        </div>
+                        <div id="mod_mp" class="modal-body">
+                            <p>Se va a eliminar la Materia Prima seleccionada. Desea continuar?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" @click="eliminarMPSeleccionada()">Si</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="cancelarEliminarMP()">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 </template>
 
 <script>
 
-import mpService from '@/services/materiasPrimas'; 
 import MPForm from '@/components/private/MateriasPrimas-form'; 
 import { mapState, mapActions } from 'vuex'; 
 
@@ -92,14 +116,8 @@ export default {
     },
     data() {
         return {
-            materias_primas : [], 
-            prev_page_url: null, 
-            next_page_url: null, 
-            last_page: 0, 
-            current_page: 0, 
-            categorias:[], 
-            unidad_medida: [], 
-            amMP_titulo: ""
+            amMP_titulo: "", 
+            tipo_movimiento: ''
         }
     }, 
     components: {
@@ -107,7 +125,7 @@ export default {
     }, 
     methods: {
         // mapeo funciones para no utilizar this.$store...
-        ...mapActions('mp_actualizacion', ['setMP']), 
+        ...mapActions('mp_actualizacion', ['listMateriasPrimas','setMP','eliminarMP']),
 
         // recupero mps de una pagina particular
         getMPPage(pagina, url = null) {
@@ -117,18 +135,7 @@ export default {
             } else {
                 nueva_pagina = pagina; 
             }
-
-            mpService.listMaetriasPrimas(nueva_pagina).then(res => {
-                this.materias_primas = res.data.materias_primas.data; 
-                this.categorias = res.data.categorias; 
-                this.unidad_medida = res.data.unidad_medida; 
-
-                // seteo info parala paginacion
-                this.prev_page_url = res.data.materias_primas.prev_page_url, 
-                this.next_page_url = res.data.materias_primas.next_page_url, 
-                this.last_page = res.data.materias_primas.last_page, 
-                this.current_page = res.data.materias_primas.current_page
-            }); 
+            this.listMateriasPrimas(nueva_pagina); 
         },
 
         // muestro componente para editar/agregar mps -> seteo la mp en vuex para 
@@ -138,13 +145,28 @@ export default {
             //this.$store.dispatch('setMP', mp); 
             this.setMP(mp);
             if (mp == null) {
-                this.amMP_titulo = "Alta Materia Prima";
+                this.tipo_movimiento = 'alta'; 
+                this.amMP_titulo = 'Alta Materia Prima';
             } else {
-                this.amMP_titulo = "Modificacion Materia Prima";
+                this.tipo_movimiento = 'modificacion'
+                this.amMP_titulo = 'Modificacion Materia Prima';
             }
-            
+
             $('#id_mod_mp').modal('show');
+        }, 
+        mostrarMSNEliminar(mp) {
+            this.setMP(mp);
+            $('#id_elim_mp').modal('show'); 
+        }, 
+        eliminarMPSeleccionada() {
+            this.eliminarMP();
+        }, 
+        cancelarEliminarMP() {
+            this.setMP(null);
         }
+    },
+    computed: {
+        ...mapState('mp_actualizacion', ['materias_primas', 'categorias', 'unidad_medida', 'prev_page_url', 'next_page_url', 'last_page', 'current_page', 'mp_seleccionada', 'mp_nueva']),
     },
 }
 </script>
