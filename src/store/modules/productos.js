@@ -1,47 +1,40 @@
 import axios from "axios"; 
-axios.defaults.baseURL = process.env.VUE_APP_URL_API;
-const url_api=process.env.VUE_APP_URL_API+'mp/';
+const url_api=process.env.VUE_APP_URL_API+'producto/';
 
 const state = () => ({
-    materias_primas: [],
-    categorias: [], 
-    unidad_medida: [], 
+    productos: [],
+    materias_primas: [], 
     prev_page_url: '', 
     next_page_url: '', 
     last_page: 0, 
     current_page: 0, 
 
-    mp_seleccionada: {
+    producto_seleccionado: {
         'id': null, 
-        'nombre': "", 
-        'cantidad': null,
-        'id_categoria': null, 
-        'categoria': null,
-        'id_um': null, 
-        'uni_medida': null
+        'nombre': '', 
+        'descripcion': '', 
+        'img': '', 
+        'mps': [], 
+        'nombre_img': 'Seleccioanr imagen...'
     }, 
-    mp_nueva: {
+    producto_nuevo: {
         'id': null, 
-        'nombre': "", 
-        'cantidad': null,
-        'id_categoria': -1, 
-        'categoria': null,
-        'id_um': -1, 
-        'uni_medida': null
+        'nombre': '', 
+        'descripcion': '', 
+        'img': '', 
+        'mps': [], 
+        'nombre_img': 'Seleccioanr imagen...'
     }, 
     error: false
 })
 
 const mutations = {
-    SET_MP_LIST(state,list) {
+    SET_PRODUCTOS_LIST(state,list) {
+        state.productos = list
+    }, 
+    SET_MATERIAS_PRIMAS_LIST(state,list) {
         state.materias_primas = list
     }, 
-    SET_CATEGORIAS(state,list) {
-        state.categorias = list
-    }, 
-    SET_UNIDAD_MEDIDA(state,list) {
-        state.unidad_medida = list
-    },
     SET_PREV_PAGE(state,page) {
         state.prev_page_url = page
     }, 
@@ -54,26 +47,25 @@ const mutations = {
     SET_CURRENT_PAGE(state,page) {
         state.current_page = page
     }, 
-    SET_MP(state,mp,mp_nueva = null) {
-        if (mp == null) {
-            mp = {
+    SET_PRODUCTO(state,producto,producto_nuevo = null) {
+        if (producto == null) {
+            producto = {
                 'id': null, 
-                'nombre': "", 
-                'cantidad': null,
-                'id_categoria': -1, 
-                'categoria': null,
-                'id_um': -1, 
-                'uni_medida': null
+                'nombre': '', 
+                'descripcion': '', 
+                'img': '', 
+                'mps': [], 
+                'nombre_img': 'Seleccioanr imagen...'
             }
         }
 
-        if (mp_nueva == null) {
+        if (producto_nuevo == null) {
             // uso mp_nueva para modificar y si todo esta bien finalmente actualizar
-            mp_nueva = {...mp}; 
+            producto_nuevo = {...producto}; 
         }
 
-        state.mp_seleccionada = mp; 
-        state.mp_nueva = mp_nueva; 
+        state.producto_seleccionada = producto; 
+        state.producto_nuevo = producto_nuevo; 
     }, 
     SET_ERROR(state, error) {
         state.error = error; 
@@ -81,28 +73,31 @@ const mutations = {
 }
 
 const actions = {
-    async listMateriasPrimas({ commit }, page = 1) {
+    async listProductos({ commit }, page = 1) {
         await axios.get(url_api+"index?page="+page).then(res => {
-            commit('SET_MP_LIST', res.data.materias_primas.data); 
-            commit('SET_CATEGORIAS', res.data.categorias); 
-            commit('SET_UNIDAD_MEDIDA',res.data.unidad_medida); 
-            commit('SET_PREV_PAGE', res.data.materias_primas.prev_page_url); 
-            commit('SET_NEXT_PAGE', res.data.materias_primas.next_page_url); 
-            commit('SET_LAST_PAGE', res.data.materias_primas.last_page); 
-            commit('SET_CURRENT_PAGE', res.data.materias_primas.current_page); 
+            console.log(res);
+            commit('SET_PRODUCTOS_LIST', res.data.productos.data); 
+            commit('SET_MATERIAS_PRIMAS_LIST', res.data.materias_primas); 
+            commit('SET_PREV_PAGE', res.data.productos.prev_page_url); 
+            commit('SET_NEXT_PAGE', res.data.productos.next_page_url); 
+            commit('SET_LAST_PAGE', res.data.productos.last_page); 
+            commit('SET_CURRENT_PAGE', res.data.productos.current_page); 
+            
         }).catch(() => {
-            commit('SET_MP_LIST', []); 
-            commit('SET_CATEGORIAS', []); 
-            commit('SET_UNIDAD_MEDIDA', []); 
+            /*
+            commit('SET_PRODUCTOS_LIST', []); 
             commit('SET_PREV_PAGE', ''); 
             commit('SET_NEXT_PAGE', ''); 
             commit('SET_LAST_PAGE', 0); 
             commit('SET_CURRENT_PAGE', 0); 
+            */
         });         
     }, 
-    setMP({ commit }, mp) {
-        commit('SET_MP', mp); 
+
+    setProducto({ commit }, producto) {
+        commit('SET_PRODUCTO', producto); 
     }, 
+    /*
     async actualizarMP({ dispatch, state }) {
         await axios.put(url_api+"update/"+state.mp_nueva.id, state.mp_nueva)
             .then(res => {
@@ -156,12 +151,10 @@ const actions = {
     setError({ commit }, error) {
         commit('SET_ERROR', error); 
     }
+    */
   }
 
   const getters = {
-    getMP: state => {
-        return state.mp_seleccionada; 
-    },
   }
 
   export default {

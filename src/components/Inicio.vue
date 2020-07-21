@@ -33,7 +33,7 @@
         </tr>
     </thead>
     <tbody> 
-        <tr v-for="p in productos">
+        <tr v-for="p in productos" :key="p.id">
             <td>{{p.nombre}}</td>
             <td>{{p.descripcion}}</td>
             <td><img :src="'data:image/gif;base64,'+p.img" class="img_Thumbnail"></td>

@@ -109,7 +109,6 @@
 import MPForm from '@/components/private/MateriasPrimas-form'; 
 import { mapState, mapActions } from 'vuex'; 
 
-
 export default {
     created() {
       this.getMPPage(1);
