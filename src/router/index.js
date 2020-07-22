@@ -8,6 +8,8 @@ import Home from "@/components/private/Home";
 import Productos from "@/components/private/Productos"; 
 import MP from "@/components/private/MateriasPrimas"; 
 import Usuarios from "@/components/private/Usuarios"; 
+import GenerarPedidos from "@/components/private/GenerarPedidos"; 
+import PedidosGenerados from "@/components/private/PedidosGenerados"; 
 
 Vue.use(VueRouter);
 
@@ -32,7 +34,7 @@ const routes = [
     component: Registro
   }, 
   {
-    path: "/home",
+    path: "/datos-personales",
     name: "Home",
     meta: {
       requiresAuth: true
@@ -62,6 +64,22 @@ const routes = [
       requiresAuth: true
     },
     component: Usuarios
+  }, 
+  {
+    path: "/generar-pedido",
+    name: "Generar Pedidos",
+    meta: {
+      requiresAuth: true
+    },
+    component: GenerarPedidos
+  }, 
+  {
+    path: "/pedidos-generados",
+    name: "Pedidos Generados",
+    meta: {
+      requiresAuth: true
+    },
+    component: PedidosGenerados
   }
 ];
 

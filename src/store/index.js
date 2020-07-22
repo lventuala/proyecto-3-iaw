@@ -4,6 +4,7 @@ import auth from './modules/auth';
 import mps from './modules/mps'; 
 import productos from './modules/productos'; 
 import usuarios from './modules/usuarios'; 
+import pedidos from './modules/pedidos'; 
 
 Vue.use(Vuex);
 
@@ -13,5 +14,6 @@ export default new Vuex.Store({
     mps, 
     productos, 
     usuarios, 
+    pedidos
   }
 });

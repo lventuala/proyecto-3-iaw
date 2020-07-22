@@ -86,6 +86,13 @@ const actions = {
         });         
     }, 
 
+    async listProductosPedidos({commit}) {
+        await axios.get(url_api+"productosPedidos").then(res => {
+            commit('SET_PRODUCTOS_LIST', res.data.productos); 
+        }).catch(() => {
+        });
+    }, 
+
     setProducto({ commit }, producto) {
         commit('SET_PRODUCTO', producto); 
     }, 
