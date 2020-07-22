@@ -7,11 +7,8 @@ const url_publicas = ['login', 'logout' ];
 axios.interceptors.request.use(function (config) {
     // Do something before request is sent
 
-    console.log(config);
-
     if( url_publicas.indexOf(config.url) == -1 ) {
       let access_token = Cookies.get("token");
-      console.log("ARMA ENCABEZADO =>>>>" , config.url);
       config.headers = { 
           'Authorization': `Bearer ${access_token}`,
           'Content-Type': 'application/json', 

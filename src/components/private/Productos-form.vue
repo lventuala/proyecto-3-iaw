@@ -118,7 +118,7 @@ export default {
 
     methods: {
         // mapeo funciones para no utilizar this.$store...
-        ...mapActions('mp_actualizacion', ['actualizarMP', 'guardarMP', 'setError']),
+        ...mapActions('mps', ['actualizarMP', 'guardarMP', 'setError']),
 
         actualizaImagen(event) {
           var new_file = event.target.files[0];

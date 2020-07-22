@@ -7,6 +7,7 @@ import Registro from "../views/RegistroView.vue";
 import Home from "@/components/private/Home"; 
 import Productos from "@/components/private/Productos"; 
 import MP from "@/components/private/MateriasPrimas"; 
+import Usuarios from "@/components/private/Usuarios"; 
 
 Vue.use(VueRouter);
 
@@ -53,6 +54,14 @@ const routes = [
       requiresAuth: true
     },
     component: MP
+  }, 
+  {
+    path: "/usuarios",
+    name: "Usuarios",
+    meta: {
+      requiresAuth: true
+    },
+    component: Usuarios
   }
 ];
 

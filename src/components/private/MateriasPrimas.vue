@@ -124,7 +124,7 @@ export default {
     }, 
     methods: {
         // mapeo funciones para no utilizar this.$store...
-        ...mapActions('mp_actualizacion', ['listMateriasPrimas','setMP','eliminarMP']),
+        ...mapActions('mps', ['listMateriasPrimas','setMP','eliminarMP']),
 
         // recupero mps de una pagina particular
         getMPPage(pagina, url = null) {
@@ -165,7 +165,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('mp_actualizacion', ['materias_primas', 'categorias', 'unidad_medida', 'prev_page_url', 'next_page_url', 'last_page', 'current_page', 'mp_seleccionada', 'mp_nueva']),
+        ...mapState('mps', ['materias_primas', 'categorias', 'unidad_medida', 'prev_page_url', 'next_page_url', 'last_page', 'current_page', 'mp_seleccionada', 'mp_nueva']),
     },
 }
 </script>

@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     // mapeo funciones para no utilizar this.$store...
-    ...mapActions('mp_actualizacion', ['actualizarMP', 'guardarMP', 'setError']),
+    ...mapActions('mps', ['actualizarMP', 'guardarMP', 'setError']),
 
     async guardarDatos() {
       
@@ -125,7 +125,7 @@ export default {
   },
   computed: {
     ...mapState(
-      'mp_actualizacion',
+      'mps',
       [
         'mp_seleccionada',
         'mp_nueva',
