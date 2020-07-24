@@ -11,6 +11,8 @@ import Usuarios from "@/components/private/Usuarios";
 import GenerarPedidos from "@/components/private/GenerarPedidos"; 
 import PedidosGenerados from "@/components/private/PedidosGenerados"; 
 
+import store from '@/store/index.js'
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -90,5 +92,19 @@ const router = new VueRouter({
   linkActiveClass: "active",
   linkExactActiveClass: "",
 });
+
+router.beforeEach( async (to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    await store.dispatch("getUser"); 
+    let user = store.getters.getUser; 
+    if (user) {
+      next(); 
+    } else {
+      next('/');
+    }
+  } else {
+    next();
+  }
+})
 
 export default router;

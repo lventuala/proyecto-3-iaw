@@ -5,7 +5,7 @@
                     Listado de Materias Primas
                 </div>
 
-                <button id="btn-aceptar-mp" class="btn btn-primary" @click="amMP()">Agregar Nueva MP</button>
+                
 
                 <div id="list_ajax" class="card-body">
 
@@ -25,7 +25,16 @@
                             <li class="page-item" v-bind:class="{ disabled: next_page_url == null }">
                                 <a class="page-link" href="#" @click="getMPPage(-1,next_page_url)">Siguiente</a>
                             </li>
+                            
                         </ul>
+
+                        <ul class="navbar-nav ml-auto">
+                            <li>
+                                
+                            </li>
+
+                        </ul>
+
                     </nav>
 
                     <table class="table table-hover">
@@ -35,7 +44,7 @@
                               <th scope="col">Categoria</th>
                               <th scope="col">Uni. Medida</th>
                               <th scope="col">Cantidad Actual</th>
-                              <th></th>
+                              <th> <button id="btn-aceptar-mp" class="btn btn-primary" @click="amMP()">Agregar Nueva MP</button> </th>
                           </tr>
                       </thead>
                       <tbody id="body_list_mp">
