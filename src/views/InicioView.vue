@@ -6,7 +6,7 @@
 
 <script>
 // @ is an alias to /src
-import Inicio from "@/components/Inicio.vue";
+import Inicio from "@/components/public/Inicio.vue";
 import NavBar from "@/components/public/Navbar-public.vue";
 
 export default {
