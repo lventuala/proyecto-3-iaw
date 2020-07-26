@@ -5,11 +5,7 @@
         </div>
         <div class="card-body">
 
-            
-
             <div id="accordion">
-
-                @foreach($pedidos as $pedido)
 
                 <div v-for="pedido in pedidos" :key="pedido.id" class="card">
                     <div class="card-header" :id="'id_'+pedido.id">
